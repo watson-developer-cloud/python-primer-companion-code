@@ -23,6 +23,7 @@ fi
 echo port is $SERVER_PORT
 echo Performing database initialisations and migrations
 python manage.py makemigrations
-python manage.py migratepython manage.py shell < initdbadmin.py
+python manage.py migrate
+python manage.py shell < initdbadmin.py
 echo [$0] Starting Django Server...
 python manage.py runserver 0.0.0.0:$SERVER_PORT --noreload
