@@ -14,5 +14,7 @@ This episode shows how to use the Language Translation service to identify avail
 translate the submitted text into a language that your application is able to process.
 
 ## Episode 3 : [Natural Language Classification](/episode-3/README.md)
+This episode shows how to use the Natural Language service to identify an intent or meaning as a classification of 
+of the submitted text.
 
 ## Episode 4 : Coming soon
