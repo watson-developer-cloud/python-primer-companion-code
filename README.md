@@ -10,5 +10,7 @@ This episode guides you through the process of creating Django and Flask applica
 switch on logging and consume the Watson Language Identification service using the python SDK.
 
 ## Episode 2 : [Language Translation](/episode-2/README.md)
+This episode shows how to use the Language Translation service to identify available translations and if available
+translate the submitted text into a language that your application is able to process.
 
 ## Episode 3 : Coming soon
