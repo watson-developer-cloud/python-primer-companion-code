@@ -9,4 +9,6 @@ of Bluemix.
 This episode guides you through the process of creating Django and Flask application shells, how to debug, 
 switch on logging and consume the Watson Language Identification service using the python SDK.
 
-## Episode 2 : Coming soon  
+## Episode 2 : [Language Translation](/episode-2/README.md)
+
+## Episode 3 : Coming soon
