@@ -17,4 +17,8 @@ translate the submitted text into a language that your application is able to pr
 This episode shows how to use the Natural Language service to identify an intent or meaning as a classification of 
 of the submitted text.
 
-## Episode 4 : Coming soon
+## Episode 4 : [REST API](/episode-4/README.md)
+This episode shows how to wrap the application functionality into a REST API that can be used by other applications 
+as well as asynchronously from the web browser. 
+
+## Episode 5 : Coming soon
