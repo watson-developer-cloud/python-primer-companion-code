@@ -21,4 +21,8 @@ of the submitted text.
 This episode shows how to wrap the application functionality into a REST API that can be used by other applications 
 as well as asynchronously from the web browser. 
 
-## Episode 5 : Coming soon
+## Episode 5 : [Credential Store](/episode-5/README.md)
+This episode shows how to utilise the environment variables that Bluemix makes available to read in the service
+credentials. 
+
+## Episode 6 : Coming soon
