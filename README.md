@@ -25,4 +25,7 @@ as well as asynchronously from the web browser.
 This episode shows how to utilise the environment variables that Bluemix makes available to read in the service
 credentials. 
 
-## Episode 6 : Coming soon
+## Episode 6 : [AlchemyAPI Keywords and Entities](/episode-6/README.md)
+This episode shows how to determine the keywords and entities in the submitted text. 
+
+## Episode 7 : Coming soon

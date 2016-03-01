@@ -1,0 +1,11 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: eu-gb.mybluemix.net
+  name: your-flask-project
+  host: your-flask-project
+  disk_quota: 1024M
+  buildpack: https://github.com/cloudfoundry/python-buildpack#v1.5.4
+  cf_stacks:
+    - cflinuxfs2
