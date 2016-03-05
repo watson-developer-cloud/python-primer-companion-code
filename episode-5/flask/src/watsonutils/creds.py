@@ -26,7 +26,7 @@ class CredentialStore(object):
     super(CredentialStore, self).__init__() 
     if CredentialStore.creds is None:
         module_dir = os.path.dirname(__file__) 
-        file_path = os.path.join(module_dir, '../static/', 'credentials.json')	
+        file_path = os.path.join(module_dir, 'credentials.json')	
         print("Looking for file ", file_path)
         try:
           with open(file_path) as f:

@@ -49,7 +49,7 @@ def index(request):
       except WatsonException as err:
       	allinfo['error'] = err
 
-      allinfo['lang'] = allinfo['outputText']
+      allinfo['lang'] = allinfo.get('outputText', 'Check for errors, no output produced')
     else:
       allinfo['error'] = "The form is invalid" 
   else:
