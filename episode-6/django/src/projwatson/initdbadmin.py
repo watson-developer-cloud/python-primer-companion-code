@@ -13,18 +13,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from django.contrib.auth.models import User
-from django.db.utils import IntegrityError
-
-import logginglogger = logging.getLogger(__name__)
-
-class MainProgram(object):
-  def __init__(self):
-  try:
-    User.objects.create_superuser (username='<the admin id that you will want to use>',
-                                   password='<the admin password>',
-                                   email='an-email-address@yourco.com')
-  except IntegrityError as e:
-    logger.warning("DB Error Thrown %s" % e)
-
+from createdbadmin import MainProgram
 go = MainProgram()
