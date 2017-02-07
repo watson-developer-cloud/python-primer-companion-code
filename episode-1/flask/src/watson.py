@@ -13,9 +13,8 @@
 # limitations under the License.
 
 import os
-import json
 
-from flask import Flask, jsonify, render_template, redirect, session, url_for
+from flask import Flask, render_template, redirect, session, url_for
 from flask.ext.wtf import Form
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import Required
@@ -23,53 +22,57 @@ from wtforms.validators import Required
 from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
-# Initialise the application and the secret key needed for CSRF protected form submission.
+# Initialise the application and the secret key needed for CSRF protected form
+# submission.
 # You should change the secret key to something that is secret and complex.
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'please subtitute this string with something hard to guess'
 
-# The form containing the text to be processed that the application web page will be submitted/
+
+# The form containing the text to be processed that the application web page
+# will be submitted
 class LangForm(Form):
     txtdata = TextAreaField('Text to process', validators=[Required()])
     submit = SubmitField('Process')
 
-# As this is the only route defined in this application, so far, it is the only page that 
-# the application will respond to.
+
+# As this is the only route defined in this application, so far, it is the only
+# page that the application will respond to.
 @app.route('/wl/lang', methods=['GET', 'POST'])
 def wlhome():
     # This is how you do logging, in this case information messages.
     app.logger.info('wlhome page requested')
     allinfo = {}
-    lang = "TBD"
+    lang = 'TBD'
     txt = None
     form = LangForm()
-    # If the form passes this check, then its a POST and the fields are valid. ie. if the 
-    # request is a GET then this check fails.	
+    # If the form passes this check, then its a POST and the fields are valid.
+    # ie. if the request is a GET then this check fails.
     if form.validate_on_submit():
-        lang = "TBC"
+        lang = 'TBC'
         txt = form.txtdata.data
         form.txtdata.data = ''
 
         try:
             language_translation = LanguageTranslation(username='<your username key for the Watson language translation service>',
-                                                   password='<your password key for the service>')
+                                                       password='<your password key for the service>')
             langsdetected = language_translation.identify(txt)
-            primarylang = langsdetected["languages"][0]['language']
-            confidence = langsdetected["languages"][0]['confidence']
+            primarylang = langsdetected["languages"][0]
 
-            lang = "I am %s confident that the language is %s" % (confidence, primarylang)            
+            lang = "I am {confidence} confident that the language is {language}.".format(**primarylang)
             session['langtext'] = lang
 
             allinfo['lang'] = lang
             allinfo['form'] = form
             return redirect(url_for('wlhome'))
         except WatsonException as err:
-          allinfo['error'] = err
+            allinfo['error'] = err
 
     allinfo['lang'] = session.get('langtext')
     allinfo['form'] = form
     return render_template('watson/wlindex.html', info=allinfo)
 
-port = os.getenv('PORT', '5000')
+
+port = os.getenv('PORT', 5000)
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=int(port), debug=True)
+    app.run(host='0.0.0.0', port=int(port), debug=True)
