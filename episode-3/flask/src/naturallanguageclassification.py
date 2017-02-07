@@ -39,7 +39,7 @@ class NaturalLanguageClassifierUtils(object):
       if "classifier_id" in classificationList["classifiers"][0]:
          classID = classificationList["classifiers"][0]['classifier_id']
          status = nlc.status(classID)   
-         if "status" in status and "Available" == status["status"]:
+         if status.get("status") == "Available":
            classes = nlc.classify(classID, txt)
            if "classes" in classes:
              className = classes["classes"][0]["class_name"]
