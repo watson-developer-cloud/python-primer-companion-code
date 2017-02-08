@@ -16,12 +16,12 @@
 import json
 
 from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslationService
-from watson_developer_cloud import WatsonException
 
 
 def getTranslationService():
   return LanguageTranslationService(username='<your username key for the Watson language translation service>',
-                                    password='<your password key for the service>')  
+                                    password='<your password key for the service>')
+
 
 def identifyLanguage(app, data):
   txt = data.encode("utf-8", "replace")
@@ -29,14 +29,9 @@ def identifyLanguage(app, data):
   langsdetected = language_translation.identify(txt)
 
   app.logger.info(json.dumps(langsdetected, indent=2))
-  app.logger.info(langsdetected["languages"][0]['language'])
-  app.logger.info(langsdetected["languages"][0]['confidence'])
-
-  primarylang = langsdetected["languages"][0]['language']
-  confidence = langsdetected["languages"][0]['confidence']
-
-  retData = { "language" : primarylang,
-              "confidence" : confidence }
+  primarylang = langsdetected["languages"][0]
+  retData = {key: primarylang[key] for key in ('language', 'confidence')}
+  app.logger.info(json.dumps(retData, indent=2))
   return retData
 
 
@@ -44,12 +39,12 @@ def checkForTranslation(app, fromlang, tolang):
   supportedModels = []
   lt = getTranslationService()
   models = lt.get_models()
-  if models and ("models" in models):
-    modelList = models["models"]
-    for model in modelList:
-      if fromlang == model['source'] and tolang == model['target']:
-        supportedModels.append(model['model_id'])
+  modelList = models.get("models")
+  supportedModels = [model['model_id'] for model in modelList
+                     if fromlang == model['source']
+                     and tolang == model['target']]
   return supportedModels
+
 
 def performTranslation(app, txt, primarylang, targetlang):
   lt = getTranslationService()
