@@ -19,7 +19,7 @@ from flask.ext.wtf import Form
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import Required
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
+from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
 # Initialise the application and the secret key needed for CSRF protected form
@@ -54,8 +54,8 @@ def wlhome():
         form.txtdata.data = ''
 
         try:
-            language_translation = LanguageTranslation(username='<your username key for the Watson language translation service>',
-                                                       password='<your password key for the service>')
+            language_translation = LanguageTranslation(username='a557154f-3895-4f57-ae60-b5e0268d212f',
+                                                       password='qgj1NhYcFrnb')
             langsdetected = language_translation.identify(txt)
             primarylang = langsdetected["languages"][0]
 

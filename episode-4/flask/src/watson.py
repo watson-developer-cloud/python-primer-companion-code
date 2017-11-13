@@ -22,7 +22,6 @@ from flask.ext.wtf import Form
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import Required
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
 from languagetranslation import LanguageTranslationUtils
@@ -41,7 +40,7 @@ def wlhome():
     app.logger.info('wlhome page requested')
     allinfo = {}
     outputTxt = "TBD"
-    targetlang = 'en'    
+    targetlang = 'en'
     lang = "TBD"
     txt = None
     form = LangForm()
@@ -52,7 +51,7 @@ def wlhome():
 
         try:
             ltu = LanguageTranslationUtils(app)
-            nlcu = NaturalLanguageClassifierUtils(app)            
+            nlcu = NaturalLanguageClassifierUtils(app)
             lang = ltu.identifyLanguage(txt)
             primarylang = lang["language"]
             confidence = lang["confidence"]
@@ -92,17 +91,17 @@ def apiprocess():
     targetlang = 'en'
     classification = {"className":"unknown"}
     results = {}
-    theData = {"error":"If you see this message then something has gone badly wrong"} 
-  
+    theData = {"error":"If you see this message then something has gone badly wrong"}
+
     app.logger.info(request.form['txtdata'])
     if not 'txtdata' in request.form:
-        theData = {"error":"Text to be processed must not be blank"} 
-    else:   
+        theData = {"error":"Text to be processed must not be blank"}
+    else:
         del theData["error"]
         try:
             data = request.form['txtdata']
-            ltu = LanguageTranslationUtils(app) 
-            nlcu = NaturalLanguageClassifierUtils(app)     
+            ltu = LanguageTranslationUtils(app)
+            nlcu = NaturalLanguageClassifierUtils(app)
             primarylang = theData['language'] = ltu.identifyLanguage(data)["language"]
             if targetlang != primarylang:
                 supportedModels = ltu.checkForTranslation(primarylang, targetlang)
@@ -117,11 +116,10 @@ def apiprocess():
         except WatsonException as err:
             theData['error'] = err;
 
-    results["results"] = theData    
+    results["results"] = theData
     return jsonify(results), 201
 
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', port=int(port), debug=True)
-
