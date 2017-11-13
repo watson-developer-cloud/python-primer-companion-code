@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class LanguageTranslationUtils(BaseService):
   def __init__(self):
-    super(LanguageTranslationUtils, self).__init__("language_translation")
+    super(LanguageTranslationUtils, self).__init__("language_translator")
     self.service = LanguageTranslationService(username=self.getUser(),
                                               password=self.getPassword())
 

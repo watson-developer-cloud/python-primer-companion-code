@@ -26,7 +26,7 @@ from watson_developer_cloud import WatsonException
 
 from watsonutils.languagetranslation import LanguageTranslationUtils
 from watsonutils.naturallanguageclassification import NaturalLanguageClassifierUtils
-from watsonutils.alchemylanguage import AlchemyLanguageUtils
+from watsonutils.naturallanguageunderstanding import NaturalLanguageUnderstandingUtils
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'please subtittute this string with something hard to guess'
@@ -40,7 +40,7 @@ def wlhome():
     app.logger.info('wlhome page requested')
     allinfo = {}
     outputTxt = "TBD"
-    targetlang = 'en'    
+    targetlang = 'en'
     lang = "TBD"
     txt = None
     form = LangForm()
@@ -51,8 +51,8 @@ def wlhome():
 
         try:
             ltu = LanguageTranslationUtils(app)
-            nlcu = NaturalLanguageClassifierUtils(app)  
-            alu = AlchemyLanguageUtils(app)                      
+            nlcu = NaturalLanguageClassifierUtils(app)
+            nlu = NaturalLanguageUnderstandingUtils(app)                      
             lang = ltu.identifyLanguage(txt)
             primarylang = lang["language"]
             confidence = lang["confidence"]
@@ -70,21 +70,21 @@ def wlhome():
             else:
                 englishTxt = txt
 
-            if englishTxt:                    
+            if englishTxt:
                 classification = nlcu.classifyTheText(txt)
                 if classification:
                     outputTxt += "(and %s confident that it is %s classification)" \
                                               % (classification['confidence'],
                                                  classification['className'])
 
-                alchemyResults = alu.identifyKeyworkdsAndEntities(englishTxt) 
-                app.logger.info(alchemyResults) 
+                nluResults = nlu.identifyKeyworkdsAndEntities(englishTxt)
+                app.logger.info(nluResults)
 
-                if alchemyResults: 
-                    if 'prime_entity' in alchemyResults:
-                        outputTxt += ' Primary entity is %s ' % alchemyResults['prime_entity']   
-                    if 'prime_keyword' in alchemyResults:
-                        outputTxt += ' Primary keyword is %s' % alchemyResults['prime_keyword']   
+                if nluResults:
+                    if 'prime_entity' in nluResults:
+                        outputTxt += ' Primary entity is %s ' % nluResults['prime_entity']
+                    if 'prime_keyword' in nluResults:
+                        outputTxt += ' Primary keyword is %s' % nluResults['prime_keyword']
 
             session['langtext'] = outputTxt
 
@@ -104,23 +104,23 @@ def apiprocess():
     app.logger.info('REST API for process has been invoked')
     targetlang = 'en'
     classification = {"className":"unknown"}
-    alchemyResults = {"prime_entity":"unknown",
+    nluResults = {"prime_entity":"unknown",
                       "prime_keyword": "unknown"  }
     results = {}
-    theData = {"error":"If you see this message then something has gone badly wrong"} 
-  
+    theData = {"error":"If you see this message then something has gone badly wrong"}
+
     app.logger.info(request.form['txtdata'])
     if not 'txtdata' in request.form:
-        theData = {"error":"Text to be processed must not be blank"} 
-    else:   
+        theData = {"error":"Text to be processed must not be blank"}
+    else:
         del theData["error"]
         try:
             data = request.form['txtdata']
-            ltu = LanguageTranslationUtils(app) 
+            ltu = LanguageTranslationUtils(app)
             nlcu = NaturalLanguageClassifierUtils(app)
-            alu = AlchemyLanguageUtils(app)
+            nlu = NaturalLanguageUnderstandingUtils(app)
 
-            englishTxt = None                           
+            englishTxt = None
             primarylang = theData['language'] = ltu.identifyLanguage(data)["language"]
             if targetlang != primarylang:
                 supportedModels = ltu.checkForTranslation(primarylang, targetlang)
@@ -129,23 +129,22 @@ def apiprocess():
                     classification = nlcu.classifyTheText(englishTxt)
             else:
                 englishTxt = data
-            if englishTxt:        
+            if englishTxt:
                 classification = nlcu.classifyTheText(data)
-                alchemyResults = alu.identifyKeyworkdsAndEntities(englishTxt) 
-                app.logger.info(alchemyResults) 
+                nluResults = nlu.identifyKeyworkdsAndEntities(englishTxt)
+                app.logger.info(nluResults)
 
             theData['classification'] = classification.get('className', None)
-            theData['primary_entity'] = alchemyResults.get('prime_entity', None)
-            theData['primary_keyword'] = alchemyResults.get('prime_keyword', None)
+            theData['primary_entity'] = nluResults.get('prime_entity', None)
+            theData['primary_keyword'] = nluResults.get('prime_keyword', None)
 
         except WatsonException as err:
             theData['error'] = err;
 
-    results["results"] = theData    
+    results["results"] = theData
     return jsonify(results), 201
 
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(port), debug=True)
-
