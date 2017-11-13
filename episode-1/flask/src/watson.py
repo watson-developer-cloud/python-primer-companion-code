@@ -54,8 +54,8 @@ def wlhome():
         form.txtdata.data = ''
 
         try:
-            language_translation = LanguageTranslation(username='a557154f-3895-4f57-ae60-b5e0268d212f',
-                                                       password='qgj1NhYcFrnb')
+            language_translation = LanguageTranslation(username='<your username key for the Watson language translation service>',
+                                                       password='<your password key for the service>')
             langsdetected = language_translation.identify(txt)
             primarylang = langsdetected["languages"][0]
 
