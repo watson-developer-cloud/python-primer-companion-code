@@ -22,7 +22,7 @@ from .baseservice import BaseService
 
 class LanguageTranslationUtils(BaseService):
   def __init__(self, app):
-    super(LanguageTranslationUtils, self).__init__("language_translation")
+    super(LanguageTranslationUtils, self).__init__("language_translator")
     self.app = app
     self.service = LanguageTranslationService(username=self.getUser(),
                                               password=self.getPassword())
