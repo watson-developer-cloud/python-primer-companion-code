@@ -1,14 +1,14 @@
 # python-primer-companion-code
-These are Code examples for the developerWorks course [Create Python apps with IBM Watson and IBM Bluemix](https://developer.ibm.com/courses/all/create-python-apps-ibm-watson-ibm-bluemix/). The class teaches
+These are Code examples for the developerWorks course [Create Python apps with IBM Watson and IBM Cloud](https://developer.ibm.com/courses/all/create-python-apps-ibm-watson-ibm-bluemix/). The class teaches
 how to get started with the Watson Developer Cloud services using Django and Flask running both on and outside
-of Bluemix.
+of IBM Cloud.
 
 ## Episode 1 : [Application Shell and Language Identification](/episode-1/README.md)
 This episode guides you through the process of creating Django and Flask application shells, how to debug,
 switch on logging and consume the Watson Language Identification service using the python SDK.
 
-## Episode 2 : [Language Translation](/episode-2/README.md)
-This episode shows how to use the Language Translation service to identify available translations and if available
+## Episode 2 : [Language Translator](/episode-2/README.md)
+This episode shows how to use the Language Translator service to identify available translations and if available
 translate the submitted text into a language that your application is able to process.
 
 ## Episode 3 : [Natural Language Classification](/episode-3/README.md)
@@ -23,7 +23,7 @@ as well as asynchronously from the web browser.
 This episode shows how to utilise the environment variables that Bluemix makes available to read in the service
 credentials.
 
-## Episode 6 : [AlchemyAPI Keywords and Entities](/episode-6/README.md)
+## Episode 6 : [Natural Language Understanding Keywords and Entities](/episode-6/README.md)
 This episode shows how to determine the keywords and entities in the submitted text.
 
 ## Episode 7 : Coming soon
