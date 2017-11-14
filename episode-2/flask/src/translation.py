@@ -38,7 +38,7 @@ def identifyLanguage(app, data):
 def checkForTranslation(app, fromlang, tolang):
   supportedModels = []
   lt = getTranslationService()
-  models = lt.get_models()
+  models = lt.list_models()
   modelList = models.get("models")
   supportedModels = [model['model_id'] for model in modelList
                      if fromlang == model['source']
@@ -49,4 +49,7 @@ def checkForTranslation(app, fromlang, tolang):
 def performTranslation(app, txt, primarylang, targetlang):
   lt = getTranslationService()
   translation = lt.translate(txt, source=primarylang, target=targetlang)
-  return translation
+    theTranslation = None
+    if translation and ("translations" in translation):
+      theTranslation = translation['translations'][0]['translation']
+    return theTranslation

@@ -51,7 +51,7 @@ class LanguageTranslationUtils(object):
   def checkForTranslation(self, fromlang, tolang):
     supportedModels = []
     lt = self.getTranslationService()
-    models = lt.get_models()
+    models = lt.list_models()
     if models and ("models" in models):
       modelList = models["models"]
       for model in modelList:
@@ -62,4 +62,7 @@ class LanguageTranslationUtils(object):
   def performTranslation(self, txt, primarylang, targetlang):
     lt = self.getTranslationService()
     translation = lt.translate(txt, source=primarylang, target=targetlang)
-    return translation
+    theTranslation = None
+    if translation and ("translations" in translation):
+      theTranslation = translation['translations'][0]['translation']
+    return theTranslation
