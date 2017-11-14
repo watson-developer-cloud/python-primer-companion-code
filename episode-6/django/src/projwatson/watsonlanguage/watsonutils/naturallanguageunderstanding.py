@@ -16,7 +16,7 @@
 import json
 
 from watson_developer_cloud import NaturalLanguageUnderstandingV1 as NaturalLanguageUnderstanding
-import watson_developer_cloud.natural_language_understanding.features.v1 as Features
+from watson_developer_cloud.natural_language_understanding_v1 import Features, EntitiesOptions, KeywordsOptions
 
 from watson_developer_cloud import WatsonException
 
@@ -42,7 +42,7 @@ class NaturalLanguageUnderstandingUtils(BaseService):
     nlu = self.getNLUService()
 
     results = nlu.analyze(text=data, return_analyzed_text=True,
-                       features=[Features.Entities(), Features.Keywords()])
+                       features=Features(entities=EntitiesOptions(), keywords=KeywordsOptions()))
 
     logger.info(json.dumps(results, indent=2))
 
