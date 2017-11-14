@@ -26,33 +26,32 @@ logger = logging.getLogger(__name__)
 class NaturalLanguageClassifierUtils(BaseService):
   def __init__(self):
     super(NaturalLanguageClassifierUtils, self).__init__("natural_language_classifier")
-    self.service = NaturalLanguageClassifier(username=self.getUser(), 
+    self.service = NaturalLanguageClassifier(username=self.getUser(),
                                               password=self.getPassword())
-                                             
+
   def getNLCService(self):
-    return self.service      
+    return self.service
 
   def classifyTheText(self, txt):
     logger.info("About to run the classification")
     nlc = self.getNLCService()
     classification = {}
 
-    classificationList = nlc.list()
+    classificationList = nlc.list_classifiers()
     logger.info(classificationList)
     if "classifiers" in classificationList:
       if 0 == len(classificationList["classifiers"]):
         logger.info('No Classifiers found')
       elif "classifier_id" in classificationList["classifiers"][0]:
          classID = classificationList["classifiers"][0]['classifier_id']
-         status = nlc.status(classID)   
+         status = nlc.get_classifier(classID)
          if "status" in status and "Available" == status["status"]:
            classes = nlc.classify(classID, txt)
            if "classes" in classes:
              className = classes["classes"][0]["class_name"]
              confidence = classes["classes"][0]["confidence"]
              classification = {"confidence": confidence,
-                               "className" : className}	
+                               "className" : className}
              logger.info(classification)
 
     return classification
-
