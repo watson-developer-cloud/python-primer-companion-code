@@ -21,7 +21,7 @@ from flask.ext.wtf import Form
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import Required
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
+from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
 # Initialise the application and the secret key needed for CSRF protected form submission.
@@ -34,7 +34,7 @@ class LangForm(Form):
     txtdata = TextAreaField('Text to process', validators=[Required()])
     submit = SubmitField('Process')
 
-# As this is the only route defined in this application, so far, it is the only page that 
+# As this is the only route defined in this application, so far, it is the only page that
 # the application will respond to.
 @app.route('/wl/lang', methods=['GET', 'POST'])
 def wlhome():
@@ -44,8 +44,8 @@ def wlhome():
     lang = "TBD"
     txt = None
     form = LangForm()
-    # If the form passes this check, then its a POST and the fields are valid. ie. if the 
-    # request is a GET then this check fails.	
+    # If the form passes this check, then its a POST and the fields are valid. ie. if the
+    # request is a GET then this check fails.
     if form.validate_on_submit():
         lang = "TBC"
         txt = form.txtdata.data
@@ -58,7 +58,7 @@ def wlhome():
             primarylang = langsdetected["languages"][0]['language']
             confidence = langsdetected["languages"][0]['confidence']
 
-            lang = "I am %s confident that the language is %s" % (confidence, primarylang)            
+            lang = "I am %s confident that the language is %s" % (confidence, primarylang)
             session['langtext'] = lang
 
             allinfo['lang'] = lang

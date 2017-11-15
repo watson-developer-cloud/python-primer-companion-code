@@ -22,8 +22,6 @@ from watson_developer_cloud import WatsonException
 
 from watsonlanguage.watsonutils.languagetranslation import LanguageTranslationUtils
 from watsonlanguage.watsonutils.naturallanguageclassification import NaturalLanguageClassifierUtils
-from watsonlanguage.watsonutils.alchemylanguage import AlchemyLanguageUtils
-
 
 import json
 
@@ -52,10 +50,10 @@ def index(request):
 
       allinfo['lang'] = allinfo.get('outputText', 'Check for errors, no output produced')
     else:
-      allinfo['error'] = "The form is invalid" 
+      allinfo['error'] = "The form is invalid"
   else:
     form = Form_language
-    
+
   allinfo['form'] = form
   return render(request, 'watson/wlindex.html', allinfo)
 
@@ -80,7 +78,7 @@ def process(request):
       validRequest = True
     else:
       logger.info("The form is not valid")
-  
+
   if validRequest:
     try:
       theData = invokeServices(data)
@@ -90,7 +88,7 @@ def process(request):
       theData['error'] = 'Watson Exception has been thrown';
   else:
     theData['error'] = "The form data is invalid";
-  
+
   results["results"] = theData
   return HttpResponse(json.dumps(results), content_type="application/json")
 
@@ -102,8 +100,8 @@ def invokeServices(data):
 
   ltu = LanguageTranslationUtils()
   nlcu = NaturalLanguageClassifierUtils()
-  alu = AlchemyLanguageUtils()
-      
+  nlu = NaturalLanguageUnderstandingUtils()
+
   lang = ltu.identifyLanguage(data)
   primarylang = ltu.identifyLanguage(data)["language"]
   confidence = lang["confidence"]
@@ -122,26 +120,25 @@ def invokeServices(data):
     else:
       outputTxt += ", which unfortunately we can't translate into English"
   else:
-    englishTxt = data    
-  
-  if englishTxt:    
-    classification = nlcu.classifyTheText(englishTxt)  
+    englishTxt = data
+
+  if englishTxt:
+    classification = nlcu.classifyTheText(englishTxt)
     if classification:
       outputTxt += " (and %s confident that it is %s classification)" \
                                               % (classification['confidence'],
                                                  classification['className'])
-    alchemyResults = alu.identifyKeyworkdsAndEntities(englishTxt) 
-    logger.info(alchemyResults) 
+    nluResults = nlu.identifyKeyworkdsAndEntities(englishTxt) 
+    logger.info(nluResults)
 
-    if alchemyResults: 
-      if 'prime_entity' in alchemyResults:
-         outputTxt += ' Primary entity is %s ' % alchemyResults['prime_entity']   
-      if 'prime_keyword' in alchemyResults:
-         outputTxt += ' Primary keyword is %s' % alchemyResults['prime_keyword']   
+    if nluResults:
+      if 'prime_entity' in nluResults:
+         outputTxt += ' Primary entity is %s ' % nluResults['prime_entity']
+      if 'prime_keyword' in nluResults:
+         outputTxt += ' Primary keyword is %s' % nluResults['prime_keyword']
 
-  reply['language'] = primarylang 
+  reply['language'] = primarylang
   reply['classification'] = classification.get('className', 'no classifier found')
-  reply['outputText'] = outputTxt   
-    
-  return reply 
+  reply['outputText'] = outputTxt
 
+  return reply

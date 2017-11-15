@@ -15,7 +15,7 @@
 
 import json
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslationService
+from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslationService
 from watson_developer_cloud import WatsonException
 
 
@@ -24,10 +24,10 @@ class LanguageTranslationUtils(object):
     super(LanguageTranslationUtils, self).__init__()
     self.app = app
     self.service = LanguageTranslationService(username='<your username key for the Watson language translation service>',
-                                      password='<your password key for the service>') 
+                                      password='<your password key for the service>')
 
   def getTranslationService(self):
-    return self.service  
+    return self.service
 
   def identifyLanguage(self, data):
     txt = data.encode("utf-8", "replace")
@@ -49,7 +49,7 @@ class LanguageTranslationUtils(object):
   def checkForTranslation(self, fromlang, tolang):
     supportedModels = []
     lt = self.getTranslationService()
-    models = lt.get_models()
+    models = lt.list_models()
     if models and ("models" in models):
       modelList = models["models"]
       for model in modelList:
@@ -60,6 +60,7 @@ class LanguageTranslationUtils(object):
   def performTranslation(self, txt, primarylang, targetlang):
     lt = self.getTranslationService()
     translation = lt.translate(txt, source=primarylang, target=targetlang)
-    return translation
-
-  
+    theTranslation = None
+    if translation and ("translations" in translation):
+      theTranslation = translation['translations'][0]['translation']
+    return theTranslation

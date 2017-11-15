@@ -24,30 +24,29 @@ class NaturalLanguageClassifierUtils(BaseService):
   def __init__(self, app):
     super(NaturalLanguageClassifierUtils, self).__init__("natural_language_classifier")
     self.app = app
-    self.service = NaturalLanguageClassifier(username=self.getUser(), 
+    self.service = NaturalLanguageClassifier(username=self.getUser(),
                                               password=self.getPassword())
 
   def getNLCService(self):
-    return self.service      
+    return self.service
 
   def classifyTheText(self, txt):
     self.app.logger.info("About to run the classification")
     nlc = self.getNLCService()
     classification = {}
 
-    classificationList = nlc.list()
+    classificationList = nlc.list_classifiers()
     if "classifiers" in classificationList:
       if "classifier_id" in classificationList["classifiers"][0]:
          classID = classificationList["classifiers"][0]['classifier_id']
-         status = nlc.status(classID)   
+         status = nlc.get_classifier(classID)
          if "status" in status and "Available" == status["status"]:
            classes = nlc.classify(classID, txt)
            if "classes" in classes:
              className = classes["classes"][0]["class_name"]
              confidence = classes["classes"][0]["confidence"]
              classification = {"confidence": confidence,
-                               "className" : className}	
+                               "className" : className}
              self.app.logger.info(classification)
 
     return classification
-

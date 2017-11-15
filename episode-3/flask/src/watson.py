@@ -21,7 +21,6 @@ from flask.ext.wtf import Form
 from wtforms import TextAreaField, SubmitField
 from wtforms.validators import Required
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
 from languagetranslation import LanguageTranslationUtils
@@ -40,7 +39,7 @@ def wlhome():
     app.logger.info('wlhome page requested')
     allinfo = {}
     outputTxt = "TBD"
-    targetlang = 'en'    
+    targetlang = 'en'
     lang = "TBD"
     txt = None
     form = LangForm()
@@ -51,7 +50,7 @@ def wlhome():
 
         try:
             ltu = LanguageTranslationUtils(app)
-            nlcu = NaturalLanguageClassifierUtils(app)            
+            nlcu = NaturalLanguageClassifierUtils(app)
             lang = ltu.identifyLanguage(txt)
             primarylang = lang["language"]
             confidence = lang["confidence"]

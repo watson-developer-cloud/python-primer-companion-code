@@ -15,7 +15,7 @@
 
 import json
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslationService
+from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslationService
 from watson_developer_cloud import WatsonException
 
 from .baseservice import BaseService
@@ -25,12 +25,12 @@ logger = logging.getLogger(__name__)
 
 class LanguageTranslationUtils(BaseService):
   def __init__(self):
-    super(LanguageTranslationUtils, self).__init__("language_translation")
-    self.service = LanguageTranslationService(username=self.getUser(), 
-                                              password=self.getPassword()) 
+    super(LanguageTranslationUtils, self).__init__("language_translator")
+    self.service = LanguageTranslationService(username=self.getUser(),
+                                              password=self.getPassword())
 
   def getTranslationService(self):
-    return self.service  
+    return self.service
 
   def identifyLanguage(self, data):
     txt = data.encode("utf-8", "replace")
@@ -52,7 +52,7 @@ class LanguageTranslationUtils(BaseService):
   def checkForTranslation(self, fromlang, tolang):
     supportedModels = []
     lt = self.getTranslationService()
-    models = lt.get_models()
+    models = lt.list_models()
     if models and ("models" in models):
       modelList = models["models"]
       for model in modelList:
@@ -63,6 +63,7 @@ class LanguageTranslationUtils(BaseService):
   def performTranslation(self, txt, primarylang, targetlang):
     lt = self.getTranslationService()
     translation = lt.translate(txt, source=primarylang, target=targetlang)
-    return translation
-
-  
+    theTranslation = None
+    if translation and ("translations" in translation):
+      theTranslation = translation['translations'][0]['translation']
+    return theTranslation

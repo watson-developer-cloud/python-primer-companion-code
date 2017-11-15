@@ -16,7 +16,7 @@
 from django.shortcuts import render
 from django import forms
 
-from watson_developer_cloud import LanguageTranslationV2 as LanguageTranslation
+from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslation
 from watson_developer_cloud import WatsonException
 
 import json
@@ -40,7 +40,7 @@ def index(request):
       lang = "TBD"
 
       try:
-        language_translation = LanguageTranslation(username='<You watson language translation service username key>',
+        language_translation = LanguageTranslation(username='<Your watson language translation service username key>',
         	                                       password='<sevice password key>')
         langsdetected = language_translation.identify(data)
         primarylang = langsdetected["languages"][0]['language']
@@ -52,9 +52,9 @@ def index(request):
 
       allinfo['lang'] = lang
     else:
-      allinfo['error'] = "The form is invalid" 
+      allinfo['error'] = "The form is invalid"
   else:
     form = Form_language
-    
+
   allinfo['form'] = form
   return render(request, 'watson/wlindex.html', allinfo)
