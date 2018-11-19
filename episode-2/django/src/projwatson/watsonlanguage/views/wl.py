@@ -102,7 +102,7 @@ def checkForTranslation(fromlang, tolang):
 def performTranslation(txt, primarylang, targetlang):
   lt = getTranslationService()
   translation = lt.translate(txt, source=primarylang, target=targetlang)
-    theTranslation = None
-    if translation and ("translations" in translation):
-      theTranslation = translation['translations'][0]['translation']
-    return theTranslation
+  theTranslation = None
+  if translation and ("translations" in translation):
+    theTranslation = translation['translations'][0]['translation']
+  return theTranslation
