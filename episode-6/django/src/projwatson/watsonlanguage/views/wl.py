@@ -22,6 +22,7 @@ from watson_developer_cloud import WatsonException
 
 from watsonlanguage.watsonutils.languagetranslation import LanguageTranslationUtils
 from watsonlanguage.watsonutils.naturallanguageclassification import NaturalLanguageClassifierUtils
+from watsonlanguage.watsonutils.naturallanguageunderstanding import NaturalLanguageUnderstandingUtils
 
 import json
 
