@@ -1,7 +1,7 @@
 # python-primer-companion-code
-These are Code examples for the developerWorks course [Create Python apps with IBM Watson and IBM Cloud](https://developer.ibm.com/courses/all/create-python-apps-ibm-watson-ibm-bluemix/). The class teaches
-how to get started with the Watson Developer Cloud services using Django and Flask running both on and outside
-of IBM Cloud.
+
+## DEPRECATED: this repo is no longer actively maintained. It can still be used as reference, but may contain outdated or unpatched code.
+
 
 ## Episode 1 : [Application Shell and Language Identification](/episode-1/README.md)
 This episode guides you through the process of creating Django and Flask application shells, how to debug,
